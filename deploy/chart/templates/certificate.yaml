@@ -1,0 +1,18 @@
+apiVersion: cert-manager.io/v1alpha2
+kind: Certificate
+metadata:
+  name: {{ $.Release.Namespace }}-shopify-plugin-frontend-gateway-cert
+  namespace: istio-system
+spec:
+  secretName: {{ $.Release.Namespace }}-shopify-plugin-frontend-gateway-cert
+  issuerRef:
+    name: {{ .Values.clusterIssuer }}
+    kind: ClusterIssuer
+  commonName: {{ .Values.host }}
+  dnsNames:
+    - {{ .Values.host }}
+    {{- if .Values.aliasHosts }}
+    {{- range $aliasHost := .Values.aliasHosts }}
+    - {{ $aliasHost }}
+    {{- end }}
+    {{- end }}

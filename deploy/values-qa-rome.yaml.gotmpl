@@ -1,0 +1,10 @@
+host: shopify-plugin.qa-rome.{{ requiredEnv "REGION" }}.breadgateway.net
+clusterIssuer: letsencrypt
+
+resources:
+  requests:
+    cpu: 100m
+    memory: 100Mi
+  limits:
+    cpu: 1000m
+    memory: 400Mi

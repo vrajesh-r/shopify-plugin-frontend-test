@@ -1,0 +1,29 @@
+http:
+  host: localhost
+  port: 8000
+service:
+  name: shopify-plugin-frontend
+s3Storage:
+  name: development-frontend-artifacts
+  region: us-east-1
+  useLocal: false
+release:
+  useLD: true
+  fallbackVersion: ''
+featureFlags:
+  releaseVersionFlag: sas-deploy-shopify-plugin
+  user: static-asset-service
+  clientSideID: 5e2f65f3c44505085d88c17a
+  clientSideKey: sdk-f4ffaab8-61d7-494e-b364-74fa6f9bd5b9
+  clientInitTimeout: 6
+
+# Go templates used by the Static Asset Service and matched by asset name
+# Used to provide inline app configuration via index.html
+# NOTE: value keys must be lowercase
+templates:
+  files:
+    index:
+      name: index.html
+      values:
+        stage: local
+        apiurl: 'https://localhost:8000'

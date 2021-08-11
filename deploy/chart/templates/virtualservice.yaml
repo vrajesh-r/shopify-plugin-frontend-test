@@ -1,0 +1,62 @@
+apiVersion: networking.istio.io/v1alpha3
+kind: VirtualService
+metadata:
+  name: shopify-plugin-frontend
+  namespace: {{ .Release.Namespace }}
+  labels:
+{{ .Values.labels | toYaml | indent 4 }}
+spec:
+  hosts:
+  - "*"
+  gateways:
+  - shopify-plugin-frontend-gateway
+  http:
+    - match:
+      - uri:
+          exact: /
+      redirect:
+        uri: /gateway/index.html
+    - match:
+        - uri:
+            regex: \/(index\.html|$)
+      route:
+        - destination:
+            host: shopify-plugin-frontend
+            port:
+              number: {{ .Values.config.http.port | required "http.port is required" }}
+          headers:
+            response:
+              add:
+{{ .Values.doNotCacheHeader | toYaml | indent 16 }}
+      retries:
+        attempts: 0
+    - match:
+        - uri:
+            regex: \/.*\..*
+      route:
+        - destination:
+            host: shopify-plugin-frontend
+            port:
+              number: {{ .Values.config.http.port | required "http.port is required" }}
+          headers:
+            response:
+              add:
+{{ .Values.cacheHeader | toYaml | indent 16 }}
+      retries:
+        attempts: 0
+    - match:
+        - uri:
+            regex: \/.*
+      rewrite:
+        uri: /
+      route:
+        - destination:
+            host: shopify-plugin-frontend
+            port:
+              number: {{ .Values.config.http.port | required "http.port is required" }}
+          headers:
+            response:
+              add:
+{{ .Values.doNotCacheHeader | toYaml | indent 16 }}
+      retries:
+        attempts: 0

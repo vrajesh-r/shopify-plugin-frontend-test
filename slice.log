@@ -1,0 +1,39 @@
+[90m13:55:12[0m [32mINF[0m Slice [36mversion=[0m0.2.2
+[90m13:55:12[0m [32mINF[0m Refreshing current environment... [36menvironment=[0mslice-vraj-test
+[90m13:55:14[0m [32mINF[0m Starting telepresence...
+[90m13:55:14[0m [32mINF[0m Starting telepresence...
+Slice development container started
+T: Warning: kubectl 1.21.2 may not work correctly with cluster version 1.18.16-eks-7737de due to the version discrepancy. See https://kubernetes.io/docs/setup/version-skew-policy/ for more information.
+
+T: Using a Pod instead of a Deployment for the Telepresence proxy. If you experience problems, please file an issue!
+T: Set the environment variable TELEPRESENCE_USE_DEPLOYMENT to any non-empty value to force the old behavior, e.g.,
+T:     env TELEPRESENCE_USE_DEPLOYMENT=1 telepresence --run curl hello
+
+T: Starting network proxy to cluster by swapping out Deployment shopify-plugin-frontend-v0 with a proxy Pod
+T: Setup complete. Launching your container.
+
+T: Background process (SSH port forward (socks and proxy poll)) exited with return code 255. Command was:
+T:   ssh -N -oServerAliveInterval=1 -oServerAliveCountMax=10 -F /dev/null -oStrictHostKeyChecking=no -oUserKnownHostsFile=/dev/null -oConnectTimeout=5 -q -p 45917 telepresence@172.17.0.2 -L127.0.0.1:38317:127.0.0.1:9050 -R9055:127.0.0.1:42923
+
+T: Recent output was:
+T:   Connection to 172.17.0.2 closed by remote host.
+
+
+T: Proxy to Kubernetes exited. This is typically due to a lost connection.
+
+T: Exit cleanup in progress
+T: Cleaning up Pod
+time="2021-07-28T14:25:52-04:00" level=error msg="error waiting for container: unexpected EOF"
+Error: waiting for bash to exit: exit status 255
+Usage:
+  slice start [flags]
+
+Flags:
+  -h, --help   help for start
+
+Global Flags:
+      --config string   path to the config file (default "/localhost/.slice/config.yaml")
+  -v, --verbose         verbose log output
+
+[90m14:25:52[0m [1m[31mERR[0m[0m Command failed. [31merror=[0m[31m"waiting for bash to exit: exit status 255"[0m
+[90m14:25:52[0m [1m[31mERR[0m[0m See logs for additional information and errors.

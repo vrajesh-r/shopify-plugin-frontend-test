@@ -1,0 +1,27 @@
+datadogEnv: {{ requiredEnv "STAGE" }}
+serviceAccountRoleARN: {{ requiredEnv "SHOPIFY_PLUGIN_FRONTEND_SERVICE_ACCOUNT_ROLE_ARN" }}
+
+config:
+  s3Storage:
+  {{ requiredEnv "SHOPIFY_PLUGIN_FRONTEND_FRONTEND_ARTIFACTS" | b64dec | indent 4 }}
+  featureFlags:
+    clientSideID: {{ requiredEnv "SHOPIFY_PLUGIN_FRONTEND_LAUNCHDARKLY_CLIENT_SIDE_ID" }}
+    clientSideKey: {{ requiredEnv "SHOPIFY_PLUGIN_FRONTEND_LAUNCHDARKLY_KEY" }}
+
+  {{/*
+    // Go templates used by the Static Asset Service and matched by asset name
+    // Used to provide inline app configuration via index.html
+    // NOTE: value keys must be lowercase
+  */}}
+  templates:
+    files:
+      index:
+        name: index.html
+        values:
+          stage: {{ requiredEnv "STAGE" }}
+          apiurl: https://api.{{ requiredEnv "STAGE" }}.{{ requiredEnv "REGION" }}.breadgateway.net/api/shopify-plugin-backend
+          serviceName: "shopify-plugin-frontend"
+          datadogSite: "datadoghq.com"
+          datadogrumapplicationid: {{ requiredEnv "SHOPIFY_PLUGIN_FRONTEND_DATADOG_RUM_APPLICATION_ID" }} 
+          datadogApplicationId: {{ requiredEnv "SHOPIFY_PLUGIN_FRONTEND_DATADOG_APPLICATION_ID" }}
+          datadogClientToken: {{ requiredEnv "SHOPIFY_PLUGIN_FRONTEND_DATADOG_CLIENT_TOKEN" }}

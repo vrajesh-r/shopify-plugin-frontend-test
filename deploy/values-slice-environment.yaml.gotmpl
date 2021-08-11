@@ -1,0 +1,7 @@
+host: shopify-plugin.{{ requiredEnv "NAMESPACE" }}.development.getbread.com
+tlsRejectUnauthorized: "0"
+
+datadogEnv: {{ requiredEnv "NAMESPACE" }}
+
+config:
+  apiUrl: https://api.{{ requiredEnv "NAMESPACE" }}.development.getbread.com/api/shopify-plugin-backend

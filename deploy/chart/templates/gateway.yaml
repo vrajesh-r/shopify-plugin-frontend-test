@@ -1,0 +1,45 @@
+apiVersion: networking.istio.io/v1alpha3
+kind: Gateway
+metadata:
+  name: shopify-plugin-frontend-gateway
+  namespace: {{ .Release.Namespace }}
+spec:
+  selector:
+    istio: ingressgateway
+    breadgate: private
+  servers:
+    - hosts:
+      - {{ .Values.host }}
+      {{- if .Values.aliasHosts }}
+      {{- range $aliasHost := .Values.aliasHosts }}
+      - {{ $aliasHost }}
+      {{- end }}
+      {{- end }}
+      port:
+        name: http
+        number: 80
+        protocol: HTTP
+      tls:
+        httpsRedirect: true
+    - hosts:
+      - {{ .Values.host }}
+      {{- if .Values.aliasHosts }}
+      {{- range $aliasHost := .Values.aliasHosts }}
+      - {{ $aliasHost }}
+      {{- end }}
+      {{- end }}
+      port:
+        name: https
+        number: 443
+        protocol: HTTPS
+      tls:
+        mode: SIMPLE
+        credentialName: {{ $.Release.Namespace }}-shopify-plugin-frontend-gateway-cert
+        minProtocolVersion: TLSV1_2
+        cipherSuites:
+        - ECDHE-ECDSA-AES128-GCM-SHA256
+        - ECDHE-RSA-AES128-GCM-SHA256
+        - ECDHE-ECDSA-AES256-GCM-SHA384
+        - ECDHE-RSA-AES256-GCM-SHA384
+        - ECDHE-ECDSA-CHACHA20-POLY1305
+        - ECDHE-RSA-CHACHA20-POLY1305

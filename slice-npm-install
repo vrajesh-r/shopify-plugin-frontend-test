@@ -1,0 +1,20 @@
+#!/usr/bin/env sh
+
+set -e
+
+# This script allows for installing node modules to the local slice project volume outside of Telepresence.
+# This is a workaround for a known issue: https://breadfinance.atlassian.net/browse/OPS-3520
+
+APP_NAME="shopify-plugin-frontend"
+APP_MOUNT_SRC="shopify_plugin_frontend-node"
+
+CMD_INSTALL="npm ci"
+CMD_SET_NPM_TOKEN="echo \"//npm.pkg.github.com/:_authToken=$GITHUB_TOKEN\" >> /root/.npmrc"
+CMD="${CMD_SET_NPM_TOKEN} && ${CMD_INSTALL}"
+
+docker run -it --rm \
+  -v $PWD:/src/$APP_NAME \
+  -v $APP_MOUNT_SRC:/src/${APP_NAME}/node_modules \
+  -w /src/$APP_NAME \
+  230377472753.dkr.ecr.us-east-1.amazonaws.com/bread-node:master-latest \
+  sh -c "${CMD}"

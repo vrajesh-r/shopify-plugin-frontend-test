@@ -1,0 +1,16 @@
+releases:
+  - name: shopify-plugin-frontend
+    chart: ./chart
+    wait: false
+    timeout: 600
+    labels:
+      uat: true
+    values:
+      - values.yaml.gotmpl
+      - values-{{ requiredEnv "CLUSTER_ID" }}.yaml.gotmpl
+    hooks:
+      - events: ['postsync']
+        showlogs: true
+        command: 'update_ld_variation'
+        args:
+          - 'sas-deploy-shopify-plugin'
